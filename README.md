@@ -1,161 +1,103 @@
-  # anotherBackend API Collection
+# Banking Application
 
-This API collection provides various endpoints for user management, account handling, transaction processing, and audit logging. The collection is designed to handle typical backend operations required in a financial or account management system.
+# Demo
+A little go trhough on the user final application reviewn the postman collection and seeing a hint of the BO yet to pulish
 
-## Endpoints
+[![Check the demo](https://github.com/user-attachments/assets/549cfa36-dad1-43e7-aaf5-cc296fdca50c)](https://www.youtube.com/watch?v=iG6coQoRhbs)
 
-### Users
+## Introduction
+This repository is part of a comprehensive banking application that consists of three main components: **userApp**, **backOffice**, and **backendBank**. Together, these repositories provide a full-featured banking system, enabling both users and administrators to manage accounts, perform transactions, and monitor system activity.
 
-- **Create User**
-  - **Method:** `POST`
-  - **Endpoint:** `/api/auth/register`
-  - **Description:** Creates a new user with a specified role (user or admin).
-  - **Request Body:**
-    ```json
-    {
-      "username": "example",
-      "email": "example@example.com",
-      "password": "password",
-      "role": "user" // Optional: 'user' or 'admin'
-    }
-    ```
+## System Architecture
 
-- **Login User**
-  - **Method:** `POST`
-  - **Endpoint:** `/api/auth/login`
-  - **Description:** Authenticates a user and returns a JWT token.
-  - **Request Body:**
-    ```json
-    {
-      "username": "example",
-      "password": "password"
-    }
-    ```
+### Frontend (userApp)
+- **Technology:** React.js, Material UI
+- **Purpose:** A user-facing interface for individual users to manage their accounts, view transactions, and perform banking operations.
+- **Key Features:**
+  - User dashboard with account balance and recent transactions.
+  - Interfaces for performing transfers, deposits, and withdrawals.
+  - Detailed views of each account, including transaction history and current balance.
 
-- **User Profile**
-  - **Method:** `GET`
-  - **Endpoint:** `/api/users/profile`
-  - **Description:** Retrieves the profile of the authenticated user.
+### Frontend (backOffice)
+- **Technology:** React.js, Material UI
+- **Purpose:** An administrative interface for managing users, accounts, transactions, and audit logs.
+- **Key Features:**
+  - User management with role-based access control.
+  - Account creation and management.
+  - Viewing and filtering of audit logs.
 
-- **Get All Users**
-  - **Method:** `GET`
-  - **Endpoint:** `/api/users/profile`
-  - **Description:** Retrieves a list of all users.
+### Backend (backendBank)
+- **Technology:** Node.js, Express, MongoDB
+- **Purpose:** Handles API requests, user authentication, transaction processing, and data storage for both **userApp** and **backOffice**.
+- **Key Components:**
+  - JWT-based authentication.
+  - API endpoints for managing users, accounts, transactions, and audit logs.
+  - MongoDB models for Users, Accounts, Transactions, and AuditLogs.
 
-- **Get User by ID or Username**
-  - **Method:** `GET`
-  - **Endpoint:** `/api/users/search`
-  - **Description:** Retrieves a user by their ID or username.
-  - **Query Parameters:**
-    - `id`: User ID
+## Key Features
 
-- **Change Password**
-  - **Method:** `PUT`
-  - **Endpoint:** `/api/users/change-password`
-  - **Description:** Changes the password for the authenticated user.
-  - **Request Body:**
-    ```json
-    {
-      "oldPassword": "old_password",
-      "newPassword": "new_password"
-    }
-    ```
+### User Management
+- Registration, login, and profile management for users.
+- Role-based access control (Admins vs. Regular Users).
 
-- **Modify User**
-  - **Method:** `PUT`
-  - **Endpoint:** `/api/users/change-password`
-  - **Description:** Modifies user details, specifically the password in this case.
-  - **Request Body:**
-    ```json
-    {
-      "oldPassword": "old_password",
-      "newPassword": "new_password"
-    }
-    ```
+### Account Management
+- Account creation, viewing, and management.
+- Display of account balances and transaction history.
 
-### Accounts
+### Transaction Management
+- Perform deposits, withdrawals, and transfers between accounts.
+- View transaction history and revert transactions (admin feature).
 
-- **User Accounts**
-  - **Method:** `GET`
-  - **Endpoint:** `/api/accounts/user-accounts`
-  - **Description:** Retrieves all accounts associated with the authenticated user.
+### Audit Logging
+- Record and view significant actions performed in the system.
+- Filter logs by date, user, or action type.
 
-- **Create Account**
-  - **Method:** `POST`
-  - **Endpoint:** `/api/accounts/create`
-  - **Description:** Creates a new account for the authenticated user.
-  - **Request Body:**
-    ```json
-    {
-      "accountType": "savings" // Options: 'checking' or 'savings'
-    }
-    ```
+## Use Cases
 
-- **Delete Account by ID**
-  - **Method:** `DELETE`
-  - **Endpoint:** `/api/accounts/:id`
-  - **Description:** Deletes an account by its ID.
+### User Actions (userApp)
+- **Dashboard Access:** Users log in and access their personalized dashboard.
+- **View Account Details:** Users can view detailed information about their accounts.
+- **Perform Transactions:** Users can initiate transfers, deposits, and withdrawals.
+- **Update Profile:** Users can update their personal information and change their password.
 
-### Transfers
+### Admin Actions (backOffice)
+- **Manage Users:** Admins can manage user roles and permissions.
+- **Manage Accounts:** Admins can create and manage user accounts.
+- **View Audit Logs:** Admins can view detailed logs of system actions.
 
-- **Deposit to Account**
-  - **Method:** `POST`
-  - **Endpoint:** `/api/transactions/deposit`
-  - **Description:** Deposits a specified amount into an account.
-  - **Request Body:**
-    ```json
-    {
-      "accountId": "account_id",
-      "amount": 1000
-    }
-    ```
+## API Endpoints
 
-- **Withdraw from Account**
-  - **Method:** `POST`
-  - **Endpoint:** `/api/transactions/withdraw`
-  - **Description:** Withdraws a specified amount from an account.
-  - **Request Body:**
-    ```json
-    {
-      "accountId": "account_id",
-      "amount": 500
-    }
-    ```
+### User Management
+- **POST /auth/register:** Register a new user.
+- **POST /auth/login:** Authenticate user and generate JWT token.
+- **GET /users/profile:** Retrieve the authenticated user’s profile.
+- **PUT /users/profile:** Update user profile.
 
-- **Transfer Between Accounts**
-  - **Method:** `POST`
-  - **Endpoint:** `/api/transactions/transfer`
-  - **Description:** Transfers a specified amount from one account to another.
-  - **Request Body:**
-    ```json
-    {
-      "fromAccountId": "from_account_id",
-      "toAccountId": "to_account_id",
-      "amount": 300
-    }
-    ```
+### Account Management
+- **POST /accounts/create:** Create a new account.
+- **GET /accounts/user/:userId:** Get all accounts for a specific user.
+- **GET /accounts/:accountId:** Get details of a specific account.
 
-- **Revert Transaction**
-  - **Method:** `POST`
-  - **Endpoint:** `/api/transactions/transfer`
-  - **Description:** Reverts a previously made transaction between accounts.
-  - **Request Body:**
-    ```json
-    {
-      "fromAccountId": "from_account_id",
-      "toAccountId": "to_account_id",
-      "amount": 300
-    }
-    ```
+### Transaction Management
+- **POST /transactions/deposit:** Perform a deposit.
+- **POST /transactions/withdraw:** Perform a withdrawal.
+- **POST /transactions/transfer:** Transfer funds between accounts.
+- **GET /transactions/account/:accountId:** Get all transactions for a specific account.
 
 ### Audit Logs
+- **GET /audit/logs:** Retrieve all audit logs.
+- **GET /audit/filter:** Filter audit logs by criteria.
 
-- **Get Audit Logs**
-  - **Method:** `GET`
-  - **Endpoint:** `/api/audit/logs`
-  - **Description:** Retrieves a list of audit logs for review.
+## Security Considerations
+- **Authentication:** JWT-based authentication for securing API endpoints.
+- **Authorization:** Role-based access control to restrict actions based on user roles.
+- **Input Validation:** Ensuring all user inputs are validated and sanitized.
 
-## Postman Collection
+## Error Handling
+- Comprehensive error handling across all API endpoints.
+- Use of standardized error messages for client-side handling.
 
-You can import the `anotherBackend.postman_collection.json` file into Postman to easily test these endpoints. Make sure to set up the necessary environment variables in Postman.
+## Conclusion
+This banking application offers a robust solution for managing user accounts, performing financial transactions, and maintaining system integrity through audit logging. The integration of **userApp**, **backOffice**, and **backendBank** ensures a seamless experience for both users and administrators.
+
 
