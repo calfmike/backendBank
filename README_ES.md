@@ -1,164 +1,77 @@
-# anotherBackend API Collection
+# Aplicación Bancaria — Demo Full-Stack
 
-This API collection provides various endpoints for user management, account handling, transaction processing, and audit logging. The collection is designed to handle typical backend operations required in a financial or account management system.
+Un sistema bancario completo construido como proyecto personal para demostrar desarrollo full-stack y lógica de dominio de core bancario, de punta a punta.
 
-## Endpoints
+🎥 **[Ver la demo](https://www.youtube.com/watch?v=iG6coQoRhbs)** — un recorrido por la app de usuario final, la colección de Postman y un adelanto del back office.
 
-### Users
+## Visión general
 
-- **Create User**
-  - **Method:** `POST`
-  - **Endpoint:** `/api/auth/register`
-  - **Description:** Creates a new user with a specified role (user or admin).
-  - **Request Body:**
-    ```json
-    {
-      "username": "example",
-      "email": "example@example.com",
-      "password": "password",
-      "role": "user" // Optional: 'user' or 'admin'
-    }
-    ```
+El sistema se divide en tres repositorios que trabajan en conjunto:
 
-- **Login User**
-  - **Method:** `POST`
-  - **Endpoint:** `/api/auth/login`
-  - **Description:** Authenticates a user and returns a JWT token.
-  - **Request Body:**
-    ```json
-    {
-      "username": "example",
-      "password": "password"
-    }
-    ```
+| Componente | Repositorio | Stack | Propósito |
+|-----------|-------------|-------|-----------|
+| **userApp** | `userApp` | React, Material UI | App de usuario final para gestionar cuentas y operar |
+| **backOffice** | `backOffice` | React, Material UI | Interfaz administrativa de usuarios, cuentas, transacciones y audit logs |
+| **backendBank** | `backendBank` | Node.js, Express, MongoDB | API REST, autenticación, procesamiento de transacciones y almacenamiento |
 
-- **User Profile**
-  - **Method:** `GET`
-  - **Endpoint:** `/api/users/profile`
-  - **Description:** Retrieves the profile of the authenticated user.
+## Arquitectura
 
-- **Get All Users**
-  - **Method:** `GET`
-  - **Endpoint:** `/api/users/profile`
-  - **Description:** Retrieves a list of all users.
+```
+┌─────────────┐     ┌──────────────┐
+│   userApp   │     │  backOffice  │
+│  (React)    │     │   (React)    │
+└──────┬──────┘     └──────┬───────┘
+       │                   │
+       └─────────┬─────────┘
+                 │  API REST (JWT)
+          ┌──────▼───────┐
+          │  backendBank │
+          │ Node/Express │
+          └──────┬───────┘
+                 │
+          ┌──────▼───────┐
+          │   MongoDB    │
+          └──────────────┘
+```
 
-- **Get User by ID or Username**
-  - **Method:** `GET`
-  - **Endpoint:** `/api/users/search`
-  - **Description:** Retrieves a user by their ID or username.
-  - **Query Parameters:**
-    - `id`: User ID
+## Funcionalidades principales
 
-- **Change Password**
-  - **Method:** `PUT`
-  - **Endpoint:** `/api/users/change-password`
-  - **Description:** Changes the password for the authenticated user.
-  - **Request Body:**
-    ```json
-    {
-      "oldPassword": "old_password",
-      "newPassword": "new_password"
-    }
-    ```
+### App de usuario
+- Dashboard con saldo de cuenta y transacciones recientes
+- Transferencias, depósitos y extracciones
+- Vistas de detalle por cuenta con historial completo de transacciones
 
-- **Modify User**
-  - **Method:** `PUT`
-  - **Endpoint:** `/api/users/change-password`
-  - **Description:** Modifies user details, specifically the password in this case.
-  - **Request Body:**
-    ```json
-    {
-      "oldPassword": "old_password",
-      "newPassword": "new_password"
-    }
-    ```
+### Back office (admin)
+- Gestión de usuarios con control de acceso basado en roles
+- Creación y administración de cuentas
+- Visualización y filtrado de audit logs
 
-### Accounts
+### API backend
+- Autenticación basada en JWT
+- Endpoints REST para usuarios, cuentas, transacciones y audit logs
+- Modelos de MongoDB: Users, Accounts, Transactions, AuditLogs
 
-- **User Accounts**
-  - **Method:** `GET`
-  - **Endpoint:** `/api/accounts/user-accounts`
-  - **Description:** Retrieves all accounts associated with the authenticated user.
+## Stack tecnológico
 
-- **Create Account**
-  - **Method:** `POST`
-  - **Endpoint:** `/api/accounts/create`
-  - **Description:** Creates a new account for the authenticated user.
-  - **Request Body:**
-    ```json
-    {
-      "accountType": "savings" // Options: 'checking' or 'savings'
-    }
-    ```
+**Frontend:** React, Material UI
+**Backend:** Node.js, Express, MongoDB
+**Auth:** JWT
+**Testing de API:** colección de Postman incluida
 
-- **Delete Account by ID**
-  - **Method:** `DELETE`
-  - **Endpoint:** `/api/accounts/:id`
-  - **Description:** Deletes an account by its ID.
+## Cómo arrancarlo
 
-### Transfers
+```bash
+# Backend (backendBank)
+npm install
+npm start
 
-- **Deposit to Account**
-  - **Method:** `POST`
-  - **Endpoint:** `/api/transactions/deposit`
-  - **Description:** Deposits a specified amount into an account.
-  - **Request Body:**
-    ```json
-    {
-      "accountId": "account_id",
-      "amount": 1000
-    }
-    ```
+# Frontend (userApp / backOffice)
+npm install
+npm start
+```
 
-- **Withdraw from Account**
-  - **Method:** `POST`
-  - **Endpoint:** `/api/transactions/withdraw`
-  - **Description:** Withdraws a specified amount from an account.
-  - **Request Body:**
-    ```json
-    {
-      "accountId": "account_id",
-      "amount": 500
-    }
-    ```
+> Configurá la URL base de la API y el connection string de MongoDB en el archivo de entorno antes de ejecutar.
 
-- **Transfer Between Accounts**
-  - **Method:** `POST`
-  - **Endpoint:** `/api/transactions/transfer`
-  - **Description:** Transfers a specified amount from one account to another.
-  - **Request Body:**
-    ```json
-    {
-      "fromAccountId": "from_account_id",
-      "toAccountId": "to_account_id",
-      "amount": 300
-    }
-    ```
+## Sobre este proyecto
 
-- **Revert Transaction**
-  - **Method:** `POST`
-  - **Endpoint:** `/api/transactions/transfer`
-  - **Description:** Reverts a previously made transaction between accounts.
-  - **Request Body:**
-    ```json
-    {
-      "fromAccountId": "from_account_id",
-      "toAccountId": "to_account_id",
-      "amount": 300
-    }
-    ```
-
-### Audit Logs
-
-- **Get Audit Logs**
-  - **Method:** `GET`
-  - **Endpoint:** `/api/audit/logs`
-  - **Description:** Retrieves a list of audit logs for review.
-
-## Postman Collection
-
-You can import the `anotherBackend.postman_collection.json` file into Postman to easily test these endpoints. Make sure to set up the necessary environment variables in Postman.
-
-## License
-
-This project is licensed under the MIT License.
+Construido para practicar desarrollo full-stack con un dominio bancario — cuentas, transacciones, acceso por roles y trazas de auditoría — reflejando el tipo de sistemas que valido profesionalmente como QA Analyst especializado en core bancario y plataformas financieras.
